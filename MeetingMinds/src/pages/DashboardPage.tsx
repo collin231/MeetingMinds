@@ -52,19 +52,29 @@ const DashboardPage: React.FC = () => {
         return;
       }
 
-      console.log('📊 Supabase response:', data);
+      console.log('📊 Supabase response data:', data);
+      console.log('📊 Data type:', typeof data);
+      console.log('📊 Data length:', data ? data.length : 'null/undefined');
+      console.log('📊 Raw data structure:', JSON.stringify(data, null, 2));
 
       if (!data || data.length === 0) {
-        console.log('⚠️ No data found for API key');
+        console.log('⚠️ No data found for API key:', apiKey);
+        console.log('⚠️ This could mean:');
+        console.log('   - No records exist with this UUID in the Transcripts table');
+        console.log('   - The UUID field name might be different');
+        console.log('   - The API key might not match any records');
         setMeetings([]);
         return;
       }
 
       // Extract transcripts from the response
       const transcriptsData = data[0]?.Transcripts;
+      console.log('📋 Extracted transcripts data:', transcriptsData);
+      console.log('📋 Transcripts type:', typeof transcriptsData);
       
       if (!transcriptsData || !Array.isArray(transcriptsData)) {
         console.log('⚠️ No transcripts found in response');
+        console.log('⚠️ Available keys in data[0]:', data[0] ? Object.keys(data[0]) : 'data[0] is null/undefined');
         setMeetings([]);
         return;
       }
